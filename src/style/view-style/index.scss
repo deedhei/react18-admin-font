@@ -1,0 +1,49 @@
+.home {
+  .ant-col {
+    width: 100%;
+  }
+  .baseStyle {
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 10px;
+    padding: 2rem 1rem;
+    color: #fff;
+    .homeContent span {
+      font-weight: 600;
+      font-size: 2rem;
+    }
+  }
+  .baseChartStyle {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 2rem 1rem;
+    color: black;
+    .baseContent {
+      position: relative;
+      width: 100%;
+      font-size: 1.7rem;
+      color: rgb(114, 113, 113);
+    }
+  }
+
+  .homeFirst {
+    background-color: #70ca63;
+  }
+  .homeSecond {
+    background-color: #967adc;
+  }
+  .homeThree {
+    background-color: #5d5dfd;
+  }
+  .homeFour {
+    background-color: #fb452d;
+  }
+  .icon-style {
+    color: #fbfbf4b3;
+    font-size: 6rem;
+    padding-right: 1rem;
+  }
+}

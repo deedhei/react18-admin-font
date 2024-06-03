@@ -1,0 +1,9 @@
+.asideWrapper {
+  height: 100%;
+  // overflow: scroll;
+  :global {
+    .ant-menu-title-content {
+      // flex: none !important;
+    }
+  }
+}
