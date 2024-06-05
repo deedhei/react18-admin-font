@@ -10,6 +10,7 @@ import {
 import { Layout, Dropdown, Avatar } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { changeMenuToggle } from "../store/menuToggleSlice";
+import userAuth from "../api/userAuth";
 const { Header } = Layout;
 const headerStyle = {
   color: "#000",
@@ -21,23 +22,29 @@ const headerStyle = {
 const AppHeader = (props) => {
   const items = [
     {
-      key: "2",
+      key: "mySet",
       label: "个人设置",
       icon: <EditOutlined />,
     },
     {
-      key: "3",
+      key: "sysSet",
       label: "系统设置",
       icon: <SettingOutlined />,
     },
     {
-      key: "4",
+      key: "logoOut",
       label: "退出登录",
       icon: <LogoutOutlined />,
     },
   ];
   const menuStatus = useSelector((state) => state.menuToggle.menuStatus);
   const dispatch = useDispatch();
+  const { logoOut } = userAuth();
+  const onClick = ({ key }) => {
+    if (key == "logoOut") {
+      logoOut();
+    }
+  };
   return (
     <Header className="header" style={headerStyle}>
       <div className="left">
@@ -67,6 +74,7 @@ const AppHeader = (props) => {
           <Dropdown
             menu={{
               items,
+              onClick,
             }}
           >
             <a onClick={(e) => e.preventDefault()}>

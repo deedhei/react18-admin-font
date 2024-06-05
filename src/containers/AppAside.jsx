@@ -1,12 +1,10 @@
 import { Layout } from "antd";
 const { Sider } = Layout;
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
 import { GithubOutlined } from "@ant-design/icons";
 
 import CustomMenu from "../components/CustomMenu";
-
-import menu from "./menu.jsx";
 
 import style from "../style/view-style/aside.module.scss";
 
@@ -14,7 +12,7 @@ const asideBgColor = "#041527";
 
 const AppAside = () => {
   const menuStatus = useSelector((state) => state.menuToggle.menuStatus);
-
+  let menuData = useSelector((state) => state.menuData.menuData);
   const siderStyle = {
     position: "fixed",
     lineHeight: "120px",
@@ -39,7 +37,7 @@ const AppAside = () => {
           <GithubOutlined style={{ fontSize: "3.8rem", color: "#fff" }} />
         </a>
       </div>
-      <CustomMenu menu={menu}></CustomMenu>
+      <CustomMenu menu={menuData}></CustomMenu>
     </Sider>
   );
 };

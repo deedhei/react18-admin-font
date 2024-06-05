@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import { storage } from "../../utils/Storage";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getAsyncMenuData } from "../../store/menuSlice";
+import userApi from "@/api/userApi.js";
 
+import { editUserData } from "../../store/userDataSlice";
 import {
   Layout,
   Button,
@@ -12,33 +16,47 @@ import {
   message,
 } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-
 import "@/style/view-style/login.scss";
-
+import userAuth from "../../api/userAuth";
 const Login = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    switch (values.username) {
-      case "admin":
-        values.auth = 0;
-        break;
-      default:
-        values.auth = 1;
+  let { hasAuth } = userAuth();
+
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const onFinish = async (values) => {
+    let params = {
+      username: values.username,
+      password: values.password,
+    };
+    let res = await userApi.login(params);
+    if (res.code === 20000) {
+      storage.set("token", res.data.token);
+      dispatch(editUserData(res.data));
+      dispatch(getAsyncMenuData()).then((res) => {
+        message.success("登录成功！");
+        console.log("Login module");
+        navigate("/");
+        window.location.reload();
+      });
+    } else {
+      message.success("登录失败！");
     }
-    localStorage.setItem("user", JSON.stringify(values));
-    message.success("登录成功！");
-    navigate("/");
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   useEffect(() => {
+    if (hasAuth()) {
+      navigate("/");
+      return;
+    }
     notification.open({
       message: "欢迎使用后台管理平台",
       duration: null,
-      description: "账号 admin(管理员) 其他(游客) 密码随意",
+      description: "账号 admin(管理员) ",
     });
     return () => {
       notification.destroy();
@@ -56,6 +74,7 @@ const Login = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            initialValues={{ username: "3444982748@qq.com", password: 123456 }}
           >
             <Form.Item
               name="username"
@@ -82,6 +101,7 @@ const Login = () => {
               ]}
             >
               <Input.Password
+                autoComplete="off"
                 placeholder="密码"
                 prefix={<LockOutlined className="site-form-item-icon" />}
               />

@@ -1,3 +1,6 @@
+/**
+ * 示例
+ */
 import {
   AppstoreOutlined,
   ContainerOutlined,
@@ -14,13 +17,11 @@ const menu = [
     key: "/index",
     label: "首页",
     icon: <AppstoreOutlined />,
-    auth: [1],
   },
   {
     label: "通用",
     key: "/public",
     icon: <ContainerOutlined />,
-    auth: [1],
     children: [
       { label: "按钮", key: "/public/button", icon: "" },
       { label: "图标", key: "/public/icon", icon: "" },
@@ -67,7 +68,6 @@ const menu = [
     label: "其它",
     key: "/others",
     icon: <PieChartOutlined />,
-    auth: [1],
     children: [
       { label: "进度条", key: "/others/progress", icon: "" },
       { label: "动画", key: "/others/animation", icon: "" },
@@ -94,7 +94,6 @@ const menu = [
     label: "关于",
     key: "/about",
     icon: <UserDeleteOutlined />,
-    auth: [1],
   },
 ];
 

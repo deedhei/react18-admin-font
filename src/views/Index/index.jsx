@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
 const { Header, Footer, Sider, Content } = Layout;
@@ -5,8 +7,8 @@ import AppAside from "../../containers/AppAside";
 import AppHeader from "../../containers/AppHeader";
 import CustomBreadcrumb from "../../components/CustomBreadcrumb";
 import AppFooter from "../../containers/AppFooter";
+import { IconFont } from "../../utils/createIcon";
 import "@/style/layout.scss";
-import { useSelector } from "react-redux";
 const Index = () => {
   const layoutStyle = {
     overflow: "hidden",
@@ -20,6 +22,9 @@ const Index = () => {
     minHeight: "300px",
   };
   const menuStatus = useSelector((state) => state.menuToggle.menuStatus);
+
+  useEffect(() => {});
+
   return (
     <div className="app">
       <Layout style={layoutStyle}>
