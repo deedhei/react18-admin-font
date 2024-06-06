@@ -1,4 +1,5 @@
 import { lazyLoad } from "./index.jsx";
+
 /**
  * 配置静态路由
  */

@@ -1,5 +1,5 @@
-import { lazyLoad } from "../router/index.jsx";
 import { publicRoute } from "../router/publicRoute.config.js";
+import { IconFont } from "../utils/createIcon.js";
 /**
  * 转化为菜单
  * @param {*} menus
@@ -18,7 +18,7 @@ const handleMenu = (menus, parentPath = "") => {
       const transformedMenu = {
         label: menu.name,
         key: parentPath + menu.path,
-        icon: null,
+        icon: menu.icon,
         hidden: menu.hidden,
         children:
           menu.children?.length > 0
@@ -49,39 +49,7 @@ const handleRoute = (menus) => {
       return transformedMenu;
     });
 };
-// 因为用redux进行这么存储会报错 序列化的问题，所以只能在写一个方法用到的时候进行给component赋值
-const setComponentRoute = (menus) => {
-  if (!menus.length) {
-    return [];
-  }
-  return menus
-    .filter((menu) => !menu.hidden)
-    .map((menu) => {
-      let ele = null;
-      if (menu.element === "Layout") {
-        ele = lazyLoad("/Index");
-      } else {
-        ele = lazyLoad(menu.element);
-      }
-      const transformedMenu = {
-        path: menu.path,
-        element: ele,
-        children:
-          menu.children?.length > 0
-            ? setComponentRoute(
-                menu.children.map((child) => ({
-                  ...child,
-                  path:
-                    child.path.startsWith("/") && child.path !== "/"
-                      ? child.path.substring(1)
-                      : child.path,
-                }))
-              )
-            : null,
-      };
-      return transformedMenu;
-    });
-};
+
 /**
  * 合并公共路由和静态路由
  * @param {*} newRoutes
@@ -91,4 +59,4 @@ const combinRoute = (newRoutes) => {
   return [...newRoutes, ...publicRoute];
 };
 
-export { handleMenu, handleRoute, setComponentRoute, combinRoute };
+export { handleMenu, handleRoute, combinRoute };

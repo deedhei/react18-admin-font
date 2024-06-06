@@ -54,6 +54,7 @@ const transform = {
 };
 
 const Axios = new Vaxios({
+  baseURL: "/api",
   timeout: 100 * 1000,
   transform,
 });

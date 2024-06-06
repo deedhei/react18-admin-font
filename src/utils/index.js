@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 function typeOf(obj) {
   const toString = Object.prototype.toString;
   const map = {
@@ -37,4 +38,11 @@ const deepClone = (obj) => {
   return clone;
 };
 
-export { deepClone };
+const dateFormat = (value, formatStr = "YYYY-MM-DD") => {
+  return dayjs(value).format(formatStr);
+};
+const dateTimeFormat = (value, formatStr = "YYYY-MM-DD HH:mm:ss") => {
+  return dayjs(value).format(formatStr);
+};
+
+export { deepClone, dateFormat, dateTimeFormat };

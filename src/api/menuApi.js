@@ -1,9 +1,17 @@
 import Axios from "../server/index.js";
+
 const getUserMenu = () => {
   return Axios.request({
     method: "get",
-    url: "/api/admin/user/menus",
+    url: "/admin/user/menus",
   });
 };
 
-export default { getUserMenu };
+const getListMenu = (params) => {
+  return Axios.request({
+    method: "get",
+    url: "/admin/menus",
+    params,
+  });
+};
+export default { getUserMenu, getListMenu };

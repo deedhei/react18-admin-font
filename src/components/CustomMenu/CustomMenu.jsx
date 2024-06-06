@@ -3,11 +3,12 @@ import { useEffect, useState, useAs } from "react";
 import { Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import { IconFont } from "../../utils/createIcon";
 import { changeMenuBreadcrumbData } from "../../store/menuToggleSlice";
 const CustomMenu = (props) => {
   const [openKeys, setOpenKeys] = useState([]);
   const [current, setCurrent] = useState("/");
+  const [menuData, setMenuData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,13 +38,24 @@ const CustomMenu = (props) => {
 
     return result;
   };
+  const setIconFont = (menu, parentPath = "") => {
+    return menu.map((item) => {
+      let transformedMenu = {
+        ...item,
+        icon: <IconFont type={item.icon}></IconFont>,
+        children: item.children?.length > 0 ? setIconFont(item.children) : null,
+      };
+      return transformedMenu;
+    });
+  };
   const onOpenChange = (openKeys) => {
     setOpenKeys(openKeys);
   };
   useEffect(() => {
+    setMenuData(setIconFont(props.menu));
     setCurrent(pathname);
     setOpenKeys(getPathArray(pathname));
-  }, [pathname]);
+  }, []);
   return (
     <Menu
       onClick={onClick}
@@ -55,7 +67,7 @@ const CustomMenu = (props) => {
       selectedKeys={[current]}
       onOpenChange={onOpenChange}
       mode="inline"
-      items={props.menu}
+      items={menuData}
     ></Menu>
   );
 };
