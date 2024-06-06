@@ -1,5 +1,4 @@
-import { createHashRouter } from "react-router-dom";
-import { lazy } from "react";
+import { Suspense, lazy } from "react";
 // 路由拦截器
 import PrivateRoute from "./PrivateRoute.jsx";
 
@@ -8,31 +7,31 @@ const lazyLoad = (moduleName) => {
   if (!moduleName) {
     return null;
   }
-  const Module = lazy(() =>
-    import(/* @vite-ignore */ `/src/views${moduleName}`)
+  const Module = lazy(
+    () =>
+      new Promise((resolve, reject) => {
+        import(/* @vite-ignore */ `/src/views${moduleName}`).then((res) =>
+          resolve(res)
+        );
+      })
   );
-  return <Module />;
+  if (moduleName == "/Login") {
+    return (
+      <Suspense>
+        <Module />
+      </Suspense>
+    );
+  } else {
+    return (
+      <PrivateRoute>
+        <Suspense>
+          <Module />
+        </Suspense>
+      </PrivateRoute>
+    );
+  }
 };
 
 // 配置路由映射 （不同的路由对应渲染不同的页面组件）
-const router = createHashRouter([
-  {
-    path: "/login",
-    element: lazyLoad("/Login"),
-  },
-  {
-    path: "*",
-    element: lazyLoad("/Others/404"),
-  },
-]);
-const routes = [
-  {
-    path: "/login",
-    element: lazyLoad("/Login"),
-  },
-  {
-    path: "*",
-    element: lazyLoad("/Others/404"),
-  },
-];
-export { router, lazyLoad, routes };
+
+export { lazyLoad };

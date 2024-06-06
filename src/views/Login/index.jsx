@@ -34,14 +34,15 @@ const Login = () => {
     if (res.code === 20000) {
       storage.set("token", res.data.token);
       dispatch(editUserData(res.data));
-      dispatch(getAsyncMenuData()).then((res) => {
+      let resMenu = await dispatch(getAsyncMenuData());
+      if (resMenu.meta.requestStatus === "fulfilled") {
         message.success("登录成功！");
-        console.log("Login module");
         navigate("/");
-        window.location.reload();
-      });
+      } else {
+        message.success("出错了！");
+      }
     } else {
-      message.success("登录失败！");
+      message.success(res.msg);
     }
   };
   const onFinishFailed = (errorInfo) => {

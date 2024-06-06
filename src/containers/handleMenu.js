@@ -1,63 +1,11 @@
-// let menus = [
-//   {
-//     name: "首页",
-//     path: "/",
-//     component: "Layout",
-//     icon: "el-icon-myshouye",
-//     hidden: false,
-//     children: [],
-//   },
-//   {
-//     name: "文章管理",
-//     path: "/article-submenu",
-//     component: "Layout",
-//     icon: "el-icon-mywenzhang-copy",
-//     hidden: false,
-//     children: [
-//       {
-//         name: "发布文章",
-//         path: "/articles",
-//         component: "/article/Article.jsx",
-//         icon: "el-icon-myfabiaowenzhang",
-//         hidden: false,
-//         children: null,
-//       },
-//       {
-//         name: "修改文章",
-//         path: "/articles/*",
-//         component: "/article/Article.jsx",
-//         icon: "el-icon-myfabiaowenzhang",
-//         hidden: true,
-//         children: null,
-//       },
-//       {
-//         name: "文章列表",
-//         path: "/article-list",
-//         component: "/article/ArticleList.jsx",
-//         icon: "el-icon-mywenzhangliebiao",
-//         hidden: false,
-//         children: null,
-//       },
-//       {
-//         name: "分类管理",
-//         path: "/categories",
-//         component: "/category/Category.jsx",
-//         icon: "el-icon-myfenlei",
-//         hidden: false,
-//         children: null,
-//       },
-//       {
-//         name: "标签管理",
-//         path: "/tags",
-//         component: "/tag/Tag.jsx",
-//         icon: "el-icon-myicontag",
-//         hidden: false,
-//         children: null,
-//       },
-//     ],
-//   },
-// ];
 import { lazyLoad } from "../router/index.jsx";
+import { publicRoute } from "../router/publicRoute.config.js";
+/**
+ * 转化为菜单
+ * @param {*} menus
+ * @param {*} parentPath
+ * @returns
+ */
 const handleMenu = (menus, parentPath = "") => {
   return menus
     .filter((menu) => !menu.hidden)
@@ -66,7 +14,6 @@ const handleMenu = (menus, parentPath = "") => {
         let temMenu = menu.children[0];
         temMenu.path = menu.path;
         menu = temMenu;
-        console.log("[Log] menu-->", menu);
       }
       const transformedMenu = {
         label: menu.name,
@@ -81,6 +28,11 @@ const handleMenu = (menus, parentPath = "") => {
       return transformedMenu;
     });
 };
+/**
+ * 转换为route放到redux进行存储
+ * @param {*} menus
+ * @returns
+ */
 const handleRoute = (menus) => {
   const modules = import.meta.glob("@/views/**/*.js"); // 获取所有的
   if (!menus.length) {
@@ -97,7 +49,7 @@ const handleRoute = (menus) => {
       return transformedMenu;
     });
 };
-// 因为用redux进行这么存储会报错 序列化的问题所以只能在写一个方法用到的时候进行给component赋值
+// 因为用redux进行这么存储会报错 序列化的问题，所以只能在写一个方法用到的时候进行给component赋值
 const setComponentRoute = (menus) => {
   if (!menus.length) {
     return [];
@@ -130,4 +82,13 @@ const setComponentRoute = (menus) => {
       return transformedMenu;
     });
 };
-export { handleMenu, handleRoute, setComponentRoute };
+/**
+ * 合并公共路由和静态路由
+ * @param {*} newRoutes
+ * @returns
+ */
+const combinRoute = (newRoutes) => {
+  return [...newRoutes, ...publicRoute];
+};
+
+export { handleMenu, handleRoute, setComponentRoute, combinRoute };

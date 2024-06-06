@@ -8,7 +8,6 @@ const transform = {
   requestInterceptors: (config) => {
     // 请求之前处理config
     const token = storage.get("token");
-    console.log("[Log] token-->", token);
     if (token) {
       // jwt token
       config.headers = {

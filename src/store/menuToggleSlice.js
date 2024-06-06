@@ -16,11 +16,17 @@ export const menuToggleSlice = createSlice({
     changeMenuBreadcrumbData: (state, { payload }) => {
       state.menuBreadcrumbData = payload;
     },
+    deleteMenutoggleData: (state) => {
+      state.menuBreadcrumbData = [];
+    },
   },
 });
 
 // 为每个 case reducer 函数生成 Action creators
-export const { changeMenuToggle, changeMenuBreadcrumbData } =
-  menuToggleSlice.actions;
+export const {
+  changeMenuToggle,
+  changeMenuBreadcrumbData,
+  deleteMenutoggleData,
+} = menuToggleSlice.actions;
 
 export default menuToggleSlice.reducer;

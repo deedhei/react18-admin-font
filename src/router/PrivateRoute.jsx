@@ -1,5 +1,10 @@
 import userAuth from "../api/userAuth";
 import { Navigate, useLocation } from "react-router-dom";
+/**
+ * 路由鉴权
+ * @param {*} param0
+ * @returns
+ */
 const PrivateRoute = ({ children }) => {
   let { hasAuth } = userAuth();
   const location = useLocation();

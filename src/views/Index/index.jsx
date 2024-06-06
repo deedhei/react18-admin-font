@@ -23,7 +23,7 @@ const Index = () => {
   };
   const menuStatus = useSelector((state) => state.menuToggle.menuStatus);
 
-  useEffect(() => {});
+  useEffect(() => {}, []);
 
   return (
     <div className="app">

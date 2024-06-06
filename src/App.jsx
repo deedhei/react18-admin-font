@@ -1,46 +1,25 @@
-import React, {
-  Suspense,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
-import { createHashRouter } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 // router
-import { RouterProvider } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import { publicRoute } from "./router/publicRoute.config.js";
+import { setComponentRoute, combinRoute } from "./containers/handleMenu.js";
+// redux
 import { useSelector } from "react-redux";
-import { setComponentRoute } from "./containers/handleMenu.js";
-
+// util
 import { deepClone } from "./utils/index.js";
 
-function Loading() {
-  return <h2>🌀 Loading...</h2>;
-}
 const App = () => {
   const [routes, setRoutes] = useState(publicRoute);
   let newRoutes = useSelector((state) => state.menuData.routeData);
-  const routeRef = useRef(routes);
   const combineRoute = useCallback(() => {
-    let data = setComponentRoute(deepClone(newRoutes));
-    const updatedRoutes = [...data, ...routes];
-    setRoutes(() => {
-      routeRef.current = updatedRoutes;
-      return updatedRoutes;
-    });
-  }, []);
+    let data = combinRoute(setComponentRoute(deepClone(newRoutes)));
+    setRoutes(data);
+  }, [newRoutes]);
 
   useEffect(() => {
-    if (newRoutes.length > 0) {
-      combineRoute();
-    }
-    console.log("[Log] routeRef.current-->", routeRef.current);
+    combineRoute();
   }, [newRoutes]);
-  return (
-    <Suspense fallback={<Loading />}>
-      <RouterProvider router={createHashRouter(routeRef.current)} />
-    </Suspense>
-  );
+  return <>{useRoutes(routes)}</>;
 };
 
 export default App;

@@ -1,21 +1,23 @@
 import { useEffect } from "react";
 import { Breadcrumb } from "antd";
-import menu from "../../containers/menu";
+// import menu from "../../containers/menu";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const BreadcrumbStyle = {
   padding: "1rem 2rem ",
 };
 
-const homeMenu = <a href="/">首页</a>;
+const homeMenu = <a>首页</a>;
 
 const CustomBreadcrumb = () => {
   const menuBreadcrumbData = useSelector(
     (state) => state.menuToggle.menuBreadcrumbData
   );
+  let menu = useSelector((state) => state.menuData.menuData);
+
   const navigate = useNavigate();
   const navigateClick = (path) => {
-    navigate(`/${path}`);
+    // navigate(`/${path}`);
   };
   const setBeadCrumb = (menu, paths) => {
     const labelData = [];

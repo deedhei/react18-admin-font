@@ -16,6 +16,7 @@ export const userDataSlice = createSlice({
     },
     deleteUserData: (state) => {
       state.userInfo = {};
+      state.token = "";
     },
   },
 });
